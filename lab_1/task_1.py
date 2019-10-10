@@ -1,4 +1,5 @@
 def task_1():
+    print('hello cruel world')
     return ''
 
 
