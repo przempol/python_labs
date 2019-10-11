@@ -1,4 +1,11 @@
 def unique(values):
+    ret = []
+    for val in values:
+        if val not in ret:
+            ret.append(val)
+    print('does it work?')
+    return ret
+
     """
     Funkcja zwraca listę unikatowych wartości.
     Utrudnienie: Funkcja zwraca unikatowe wartości w kolejności wystąpienia.

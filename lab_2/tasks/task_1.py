@@ -1,4 +1,13 @@
 def counting_sort(values, _max, _min=0):
+    ret = []
+    for i in range(_max):
+        count = 0
+        for val in values:
+            if i == val:
+                count += 1
+        for j in range(count):
+            ret.append(i)
+    return ret
     """
     Function returns sorted list.
 
@@ -14,7 +23,6 @@ def counting_sort(values, _max, _min=0):
     :type _min: int
     :return:
     """
-    pass
 
 
 if __name__ == '__main__':
