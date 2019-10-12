@@ -1,4 +1,20 @@
 def count_letters(msg):
+    dict = {}
+    ret1 = 'a'
+    ret2 = 0
+    for c in msg:
+        if c in dict:
+            dict[c] += 1
+        else:
+            dict[c] = 1
+    for c in dict:
+        if dict[c] > ret2:
+            ret2 = dict[c]
+            ret1 = c
+        elif dict[c] == ret2 and c < ret1:
+            ret1 = c
+    ret = (ret1, ret2)
+    return ret
 
     """
     Zwraca pare (znak, liczba zliczeń) dla najczęściej występującego znaku w wiadomości.
