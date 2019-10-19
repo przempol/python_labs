@@ -13,9 +13,11 @@ def parse_input(input):
     :rtype: list
     """
 
-    print('do it in home')
-
-    pass
+    ret = input.strip()  # deleting white chars
+    ret = ret.splitlines()  # putting into one list
+    ret = list(map(lambda x: x.split(' '), ret))
+    ret = list(map(lambda x: list(map(lambda x_y: int(x_y), x)), ret))  # x stand for lists in list, x_y is elem. of x
+    return ret
 
 
 _input = """
