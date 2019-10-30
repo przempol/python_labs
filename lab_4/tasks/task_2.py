@@ -1,5 +1,5 @@
 """
-Część 1 (1 pkt): Uzupełnij klasę Vector tak by reprezentowała wielowymiarowy wektor.
+Częśćć 1 (1 pkt): Uzupełnij klasę Vector tak by reprezentowała wielowymiarowy wektor.
 Klasa posiada przeładowane operatory równości, dodawania, odejmowania,
 mnożenia (przez liczbę i skalarnego), długości
 oraz nieedytowalny (własność) wymiar.
@@ -21,9 +21,18 @@ class Vector:
     def dim(self, dim):
         self._dim = dim
 
+    @property
+    def len(self):
+        return self._len
+
+    @len.setter
+    def len(self, len):
+        self._len = len
+
     def __init__(self, *args):
         self.dim = len(args)
         self.components = list(args)
+        self.len = sum(list(map(lambda x: x ** 2, self.components))) ** 0.5
 
     @staticmethod
     def calculate_vector(beg, end):
@@ -92,18 +101,19 @@ class Vector:
         else:
             raise NotImplemented
 
-    @staticmethod
-    def len(vec):
-        return sum(list(map(lambda x: x ** 2, vec.components))) ** 0.5
+    def __len__(self):
+        return self.dim
 
 
 if __name__ == '__main__':
-    v1 = Vector(1, 2, 3)
-    v2 = Vector(1, 2, 3)
-    assert v1 + v2 == Vector(2, 4, 6)
-    assert v1 - v2 == Vector(0, 0, 0)
-    assert v1 * 2 == Vector(2, 4, 6)
+    v1 = Vector(1,2,3)
+    v2 = Vector(1,2,3)
+    assert v1 + v2 == Vector(2,4,6)
+    assert v1 - v2 == Vector(0,0,0)
+    assert v1 * 2 == Vector(2,4,6)
     assert v1 * v2 == 14
-    assert Vector.len(Vector(3, 4)) == 5.
-    assert Vector.calculate_vector([0, 0, 0], [1, 2, 3]) == (1, 2, 3)
-    assert Vector.from_points([0, 0, 0], [1, 2, 3]) == Vector(1, 2, 3)
+    assert len(Vector(3,4)) == 2
+    assert Vector(3,4).dim == 2
+    assert Vector(3,4).len == 5.
+    assert Vector.calculate_vector([0, 0, 0], [1,2,3]) == (1,2,3)
+    assert Vector.from_points([0, 0, 0], [1,2,3]) == Vector(1,2,3)

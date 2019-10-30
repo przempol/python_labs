@@ -34,7 +34,6 @@ class Calculator:
         :return: result of operation
         :rtype: float
         """
-
         # checking if second argument is given
         if arg2 is None:
             arg2 = self.memory

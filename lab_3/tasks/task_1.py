@@ -19,7 +19,6 @@ def parse_input(input):
     ret = list(map(lambda x: list(map(lambda x_y: int(x_y), x)), ret))  # x stand for lists in list, x_y is elem. of x
     return ret
 
-
 if __name__ == '__main__':
     _input = """
 1 5
