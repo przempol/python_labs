@@ -1,5 +1,5 @@
 """
-Częśćć 1 (1 pkt): Uzupełnij klasę Vector tak by reprezentowała wielowymiarowy wektor.
+Część 1 (1 pkt): Uzupełnij klasę Vector tak by reprezentowała wielowymiarowy wektor.
 Klasa posiada przeładowane operatory równości, dodawania, odejmowania,
 mnożenia (przez liczbę i skalarnego), długości
 oraz nieedytowalny (własność) wymiar.
@@ -12,9 +12,18 @@ Wszystkie metody sprawdzają wymiar.
 
 
 class Vector:
-    dim = None  # Wymiar vectora
+    # dim stands for dimension
+    @property
+    def dim(self):
+        return self._dim
+
+    @dim.setter
+    def dim(self, dim):
+        self._dim = dim
+
     def __init__(self, *args):
-        raise NotImplemented
+        self.dim = len(args)
+        self.components = list(args)
 
     @staticmethod
     def calculate_vector(beg, end):
@@ -28,7 +37,7 @@ class Vector:
         :return: Calculated vector
         :rtype: tuple
         """
-        raise NotImplemented
+        return tuple(map(lambda x, y: y - x, beg, end))
 
     @classmethod
     def from_points(cls, beg, end):
@@ -43,16 +52,58 @@ class Vector:
         :return: New vector
         :rtype: tuple
         """
-        raise NotImplemented
+        return Vector(*list(map(lambda x, y: y - x, beg, end)))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            if other.dim == self.dim:
+                return all(list(map(lambda x, y: x == y, self.components, other.components)))
+            else:
+                raise Exception
+        else:
+            raise NotImplemented
+
+    def __add__(self, other):
+        if isinstance(other, self.__class__):
+            if other.dim == self.dim:
+                return Vector(*list(map(lambda x, y: x + y, self.components, other.components)))
+            else:
+                raise Exception
+        else:
+            raise NotImplemented
+
+    def __sub__(self, other):
+        if isinstance(other, self.__class__):
+            if other.dim == self.dim:
+                return Vector(*list(map(lambda x, y: x - y, self.components, other.components)))
+            else:
+                raise Exception
+        else:
+            raise NotImplemented
+
+    def __mul__(self, other):
+        if isinstance(other, self.__class__):
+            if other.dim == self.dim:
+                return sum(list(map(lambda x, y: x * y, self.components, other.components)))
+            else:
+                raise Exception
+        if isinstance(other, int) or isinstance(other, float):
+            return Vector(*list(map(lambda x: x * other, self.components)))
+        else:
+            raise NotImplemented
+
+    @staticmethod
+    def len(vec):
+        return sum(list(map(lambda x: x ** 2, vec.components))) ** 0.5
 
 
 if __name__ == '__main__':
-    v1 = Vector(1,2,3)
-    v2 = Vector(1,2,3)
-    assert v1 + v2 == Vector(2,4,6)
-    assert v1 - v2 == Vector(0,0,0)
-    assert v1 * 2 == Vector(2,4,6)
+    v1 = Vector(1, 2, 3)
+    v2 = Vector(1, 2, 3)
+    assert v1 + v2 == Vector(2, 4, 6)
+    assert v1 - v2 == Vector(0, 0, 0)
+    assert v1 * 2 == Vector(2, 4, 6)
     assert v1 * v2 == 14
-    assert len(Vector(3,4)) == 5.
-    assert Vector.calculate_vector([0, 0, 0], [1,2,3]) == (1,2,3)
-    assert Vector.from_points([0, 0, 0], [1,2,3]) == Vector(1,2,3)
+    assert Vector.len(Vector(3, 4)) == 5.
+    assert Vector.calculate_vector([0, 0, 0], [1, 2, 3]) == (1, 2, 3)
+    assert Vector.from_points([0, 0, 0], [1, 2, 3]) == Vector(1, 2, 3)
