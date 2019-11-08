@@ -56,6 +56,7 @@ class Calculator:
             if arg2:
                 self._short_memory = self.operations[operator](arg1, arg2)
                 return self._short_memory
+        return None     # do it in home
 
     @property
     def memory(self):
