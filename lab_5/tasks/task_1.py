@@ -11,19 +11,27 @@ from operator import add, mul, sub, truediv
 
 
 class CalculatorError(Exception):
-    pass
+    def __init__(self):
+        try:
+            a = 1 / 0
+        except Exception as e:
+            self.__cause__ = e
+        print("Dividing by 0 (cries in math)")
 
 
-class WrongOperation(Exception):
-    pass
+class WrongOperation(CalculatorError):
+    def __init__(self):
+        print("Wrong operation")
 
 
-class NotNumberArgument(Exception):
-    pass
+class NotNumberArgument(CalculatorError):
+    def __init__(self):
+        print("Argument is not a number")
 
 
-class EmptyMemory(Exception):
-    pass
+class EmptyMemory(CalculatorError):
+    def __init__(self):
+        print("Empty memory")
 
 
 class Calculator:
@@ -52,11 +60,22 @@ class Calculator:
         :rtype: float
         """
         if operator in self.operations:
-            arg2 = arg2 or self.memory
-            if arg2:
-                self._short_memory = self.operations[operator](arg1, arg2)
-                return self._short_memory
-        return None     # do it in home
+            if arg2 is None and self.memory is None:
+                raise EmptyMemory
+            elif arg2 == 0 and operator == "/":
+                raise CalculatorError
+            elif type(arg1) != (float, int) or type(arg2) != (float, int):
+                raise NotNumberArgument
+            else:
+                arg2 = arg2 or self.memory
+                # checking for non-zero argument
+                if arg2:
+                    self._short_memory = self.operations[operator](arg1, arg2)
+                    return self._short_memory
+                else:
+                    raise EmptyMemory from ZeroDivisionError
+        else:
+            raise WrongOperation
 
     @property
     def memory(self):
@@ -72,7 +91,10 @@ class Calculator:
 
     def in_memory(self):
         """Prints memorized value."""
-        print(f"Zapamiętana wartość: {self.memory}")
+        if self.memory is not None:
+            print(f"Memorized value: {self.memory}")
+        else:
+            raise EmptyMemory
 
 
 if __name__ == '__main__':
