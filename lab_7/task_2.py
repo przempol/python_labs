@@ -23,6 +23,10 @@ def calculate_neighbours(board):
     :type board: np.ndarray
     :param periodic
     """
+    # game of life
+    # tez bez for'ów!!
+    # komorki po przekatnych tez sa sasiadami
+    print('xD')
     pass
 
 

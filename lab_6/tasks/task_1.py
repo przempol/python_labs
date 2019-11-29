@@ -34,10 +34,52 @@ Otrzymuje się wtedy 2 pkt.
 UWAGA 2: Wszystkie jednoski masy występują w przykładzie.
 """
 from pathlib import Path
+import csv
+from decimal import Decimal
 
 
 def select_animals(input_path, output_path, compressed=False):
-    pass
+    ret = []
+    header = None
+    with open(input_path, 'r') as input_file:
+        reader = csv.reader(input_file, delimiter=',')
+        header = next(reader, None)
+        dict_reader = csv.DictReader(input_file, delimiter=',', fieldnames=header)
+        prefix = {'kg': 1, 'g': 1e-3, 'mg': 1e-6, 'Mg': 1e3}
+        genera = set()  # genera stands for plural of genus
+
+        for row in dict_reader:
+            genera.add(row['genus'])
+
+        for genus in genera:
+            for gender in ['male', 'female']:
+                input_file.seek(0)
+                probes = []
+                masses = []
+                for row in dict_reader:
+                    if row['gender'] == gender and row['genus'] == genus:
+                        probes.append(row)
+                        mass = row['mass'].split(' ')
+                        fixed_mass = float(mass[0]) * prefix[mass[1]]   # fixing prefixes likes kg, mg etc.
+                        masses.append(fixed_mass)
+                ret.append([x for _, x in sorted(zip(masses, probes))][0])
+
+        ret = sorted(ret, key=lambda i: (i['genus'], i['name']))
+
+        with open(output_path, 'w') as output_file:
+            if compressed:
+                writer = csv.writer(output_file, delimiter=',', quotechar="*")
+                writer.writerow(['uuid_gender_mass'])
+                short_gender = {'male': 'M', 'female': 'F'}
+                for data in ret:
+                    mass = data['mass'].split(' ')
+                    fixed_mass = float(mass[0]) * prefix[mass[1]]
+                    writer.writerow(['{}_{}_{}'.format(data['id'], short_gender[data['gender']], '%.3e' % Decimal(
+                        fixed_mass))])
+            else:
+                writer = csv.DictWriter(output_file, fieldnames=header)
+                writer.writeheader()
+                writer.writerows(ret)
 
 
 if __name__ == '__main__':

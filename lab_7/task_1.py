@@ -17,7 +17,12 @@ def least_sq(xy):
     :type xy: np.ndarray
     :return: Tuple of fitted parameters
     """
-    pass
+    # zrobic w srodowisku wirtualnym
+    # mnozenie macierzowe, bez uzycia forow
+    ret = tuple([1, -1])
+    print(xy.shape)
+
+    return ret
 
 
 if __name__ == '__main__':
