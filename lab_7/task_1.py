@@ -19,10 +19,13 @@ def least_sq(xy):
     """
     # zrobic w srodowisku wirtualnym
     # mnozenie macierzowe, bez uzycia forow
-    ret = tuple([1, -1])
-    print(xy.shape)
-
-    return ret
+    n = xy.shape[1]
+    delta = n * np.sum(np.power(xy[0], 2)) - np.power(np.sum(xy[0]), 2)
+    a = (np.sum(np.power(xy[0], 2)) * np.sum(xy[1]) - np.sum(xy[0]) * np.sum(xy[0] * xy[1])) / delta
+    b = (n * np.sum(xy[0] * xy[1]) - np.sum(xy[0]) * np.sum(xy[1])) / delta
+    print(a)
+    print(b)
+    return tuple([a, b])
 
 
 if __name__ == '__main__':
