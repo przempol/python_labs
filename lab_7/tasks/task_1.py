@@ -19,12 +19,14 @@ def least_sq(xy):
     """
     # zrobic w srodowisku wirtualnym
     # mnozenie macierzowe, bez uzycia forow
+    x = xy[0]
+    y = xy[1]
     n = xy.shape[1]
-    delta = n * np.sum(np.power(xy[0], 2)) - np.power(np.sum(xy[0]), 2)
-    a = (np.sum(np.power(xy[0], 2)) * np.sum(xy[1]) - np.sum(xy[0]) * np.sum(xy[0] * xy[1])) / delta
-    b = (n * np.sum(xy[0] * xy[1]) - np.sum(xy[0]) * np.sum(xy[1])) / delta
-    print(a)
-    print(b)
+    delta = n * np.sum(x**2) - np.sum(x) ** 2
+    a = n * np.sum(x*y) - np.sum(x)*np.sum(y)
+    a /= delta
+    b = np.sum(x**2) * np.sum(y) - np.sum(x) * np.sum(x*y)
+    b /= delta
     return tuple([a, b])
 
 
@@ -229,4 +231,4 @@ if __name__ == '__main__':
                         98.00343145869182,
                         98.9982680433363,
                         100.00083927400149]])
-    np.testing.assert_allclose(least_sq(points), (1, -1), atol=0.1)
+    np.testing.assert_allclose(least_sq(points), (1, 1), atol=0.1)  # wrong assert
