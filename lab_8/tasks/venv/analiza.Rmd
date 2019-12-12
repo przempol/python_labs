@@ -1,0 +1,59 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.3.0
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from tools.fit_funcs import least_sq
+```
+
+```{python}
+dataset = np.genfromtxt('data/input01.txt', delimiter=',', dtype=np.float, skip_header=True)
+data_xy = dataset[:, 0:2]
+data_error = dataset[:, 2]
+a, b = least_sq(data_xy.T)
+```
+
+```{python}
+is_uncertainty_good = np.abs(data_error / data_xy[:, 1]) < 0.05
+
+# bf stands for better fit (wchich uncertainty is lower than 5%)
+data_xy_bf = data_xy[is_uncertainty_good]
+data_error_bf = data_error[is_uncertainty_good]
+a_bf, b_bf = least_sq(data_xy_bf.T)
+```
+
+```{python}
+fig = plt.figure()
+x = data_xy_bf[:, 0]
+y = data_xy_bf[:, 1]
+
+
+plt.errorbar(data_xy_bf[:, 0], data_xy_bf[:, 1], data_error_bf, c='black', marker='s', ms=2, fmt = '.', elinewidth=0.5)
+
+# bad stand for bad points, where uncertainty was greater than 5%
+data_xy_bad = data_xy[np.logical_not(is_uncertainty_good)]
+data_error_bad = data_error[np.logical_not(is_uncertainty_good)]
+
+plt.errorbar(data_xy_bad[:, 0], data_xy_bad[:, 1], data_error_bad, c='red', marker='^', ms=2, fmt = '.', elinewidth=0.5)
+
+
+plt.plot(x, a*x+b, 'b--', label='all')
+plt.plot(x, a_bf*x+b_bf, 'g--', label=r"$\Delta$ < 5%")
+plt.legend(loc=2)
+```
+
+```{python}
+fig.savefig('fitted_input01.png', dpi=200)
+```

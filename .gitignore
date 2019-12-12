@@ -1,3 +1,6 @@
+# by Przemek Nowak - Decline
+lab_8/tasks/venv/myVenv
+
 # Project specific
 .idea/*
 *.ipynb
@@ -106,3 +109,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# by Przemek Nowak - Allow
+!lab_8/tasks/venv
