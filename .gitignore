@@ -1,4 +1,5 @@
 # by Przemek Nowak - Decline
+*.csv
 lab_8/tasks/venv/myVenv
 
 # Project specific
