@@ -4,7 +4,22 @@ from time import time
 
 
 def log_run(fun):
-    pass
+    @wraps(fun)
+    def wrapper(*args, **kwargs):
+        date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+        print(f'{date}| function {fun.__name__} called with:')
+        print(f'{len(args)} positional parameter')
+        keys = ','.join(list(kwargs.keys()))
+        if keys == '':
+            keys = '-'
+        print(f'optional parameters: {keys}')
+
+        start = time()
+        ret = fun(*args, **kwargs)
+        end = time()
+        print(f'returned: {ret} ({(end - start):.2e}s) \n')
+        return ret
+    return wrapper
 
 
 @log_run
